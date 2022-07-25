@@ -10,7 +10,7 @@ To install `urlrewrite` from GitHub:
 
     go get -u github.com/kivra/krakend-urlrewrite@<commit hash>
 
-Then add `urlrewrite` to the KrakenD [`router_engine`](https://github.com/devopsfaith/krakend-ce/blob/master/router_engine.go):
+Then add `urlrewrite` to the KrakenD [`router_engine`](https://github.com/krakendio/krakend-ce/blob/master/router_engine.go):
 
 ```go
 func NewEngine(cfg config.ServiceConfig, opt luragin.EngineOptions) *gin.Engine {
