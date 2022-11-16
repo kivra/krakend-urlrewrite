@@ -15,7 +15,7 @@ Then add `urlrewrite` to the KrakenD [`router_engine`](https://github.com/devops
 ```go
 func NewEngine(cfg config.ServiceConfig, opt luragin.EngineOptions) *gin.Engine {
   engine := luragin.NewEngine(cfg, opt)
-  engine.Use(urlrewrite.HandlerFunc(engine, cfg.ExtraConfig))
+  engine.Use(urlrewrite.HandlerFunc(engine, cfg.ExtraConfig, urlrewrite.Config{}))
   ...
 ```
 
