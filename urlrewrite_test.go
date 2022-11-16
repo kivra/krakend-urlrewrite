@@ -24,11 +24,10 @@ func TestUrlRewriteWithExtraCfg(t *testing.T) {
 }
 
 func TestUrlRewriteWithDefaultCfg(t *testing.T) {
-	defaultCfg := append(
-		Config{},
+	defaultCfg := Config{
 		Rule{Pattern: "^/api/hello_(.*)$", Replace: "/api/hello/test/$1"},
 		Rule{Pattern: "^/api/hello/test/(.*)$", Replace: "/api/hello/$1"},
-	)
+	}
 
 	router := makeRouter(extraConfig([]Rule{}), defaultCfg)
 	res := performRequest("/api/hello_world", router)
@@ -42,10 +41,7 @@ func TestUrlRewriteWithDefaultAndExtraCfg(t *testing.T) {
 	rules := make([]Rule, 1)
 	rules[0] = Rule{Pattern: "^/api/hello_(.*)$", Replace: "/api/hello/test/$1"}
 
-	defaultCfg := append(
-		Config{},
-		Rule{Pattern: "^/api/hello/test/(.*)$", Replace: "/api/hello/$1"},
-	)
+	defaultCfg := Config{Rule{Pattern: "^/api/hello/test/(.*)$", Replace: "/api/hello/$1"}}
 
 	router := makeRouter(extraConfig(rules), defaultCfg)
 	res := performRequest("/api/hello_world", router)
@@ -57,7 +53,6 @@ func TestUrlRewriteWithDefaultAndExtraCfg(t *testing.T) {
 
 func makeRouter(extraCfg config.ExtraConfig, defaultCfg Config) *gin.Engine {
 	router := gin.New()
-
 	router.Use(HandlerFunc(router, extraCfg, defaultCfg))
 	router.GET("/api/hello/world", func(c *gin.Context) { c.String(http.StatusOK, "OK") })
 	return router
