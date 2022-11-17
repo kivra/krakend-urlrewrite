@@ -39,16 +39,17 @@ func ConfigGetter(e config.ExtraConfig) *Config {
 	return cfg
 }
 
-func HandlerFunc(engine *gin.Engine, extraCfg config.ExtraConfig) gin.HandlerFunc {
-	cfg := ConfigGetter(extraCfg)
-	if len(*cfg) == 0 {
+func HandlerFunc(engine *gin.Engine, extraCfg config.ExtraConfig, cfg Config) gin.HandlerFunc {
+	cfg = append(cfg, *ConfigGetter(extraCfg)...)
+
+	if len(cfg) == 0 {
 		return func(c *gin.Context) {
 			c.Next()
 		}
 	}
 
-	transformers := make([]PathTransformer, len(*cfg))
-	for i, rule := range *cfg {
+	transformers := make([]PathTransformer, len(cfg))
+	for i, rule := range cfg {
 		rex, err := regexp.Compile(rule.Pattern)
 		if err != nil {
 			panic("urlrewrite: Error: invalid regex pattern: " + rule.Pattern)
